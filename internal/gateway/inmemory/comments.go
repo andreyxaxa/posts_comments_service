@@ -1,9 +1,11 @@
 package gateway
 
 import (
+	"errors"
 	"sync"
 	"time"
 
+	"github.com/andreyxaxa/posts_comments_service/internal/consts"
 	"github.com/andreyxaxa/posts_comments_service/internal/models"
 )
 
@@ -38,7 +40,7 @@ func (c *CommentsInMemory) CreateComment(comment models.Comment) (models.Comment
 
 }
 
-func (c *CommentsInMemory) GetCommentsByPost(postId int) ([]*models.Comment, error) {
+func (c *CommentsInMemory) GetCommentsByPost(postId, limit, offset int) ([]*models.Comment, error) {
 
 	c.mu.RLock()
 	defer c.mu.RUnlock()
@@ -52,7 +54,19 @@ func (c *CommentsInMemory) GetCommentsByPost(postId int) ([]*models.Comment, err
 		}
 	}
 
-	return res, nil
+	if offset > len(res) {
+		return nil, nil
+	}
+
+	if offset+limit > len(res) || limit == -1 {
+		return res[offset:], nil
+	}
+
+	if offset < 0 || limit < 0 {
+		return nil, errors.New(consts.WrongLimitOffsetError)
+	}
+
+	return res[offset : offset+limit], nil
 }
 
 func (c *CommentsInMemory) GetRepliesOfComment(commentId int) ([]*models.Comment, error) {

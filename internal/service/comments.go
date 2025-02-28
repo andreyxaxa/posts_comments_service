@@ -8,6 +8,7 @@ import (
 	"github.com/andreyxaxa/posts_comments_service/internal/gateway"
 	"github.com/andreyxaxa/posts_comments_service/internal/models"
 	"github.com/andreyxaxa/posts_comments_service/pkg/logger"
+	"github.com/andreyxaxa/posts_comments_service/pkg/pagination"
 	re "github.com/andreyxaxa/posts_comments_service/pkg/responce_errors"
 )
 
@@ -74,7 +75,7 @@ func (c CommentsService) CreateComment(comment models.Comment) (models.Comment, 
 	return newComment, nil
 }
 
-func (c CommentsService) GetCommentsByPost(postId int) ([]*models.Comment, error) {
+func (c CommentsService) GetCommentsByPost(postId int, page *int, pageSize *int) ([]*models.Comment, error) {
 
 	if postId <= 0 {
 		c.logger.Error.Println(consts.WrongIdError, postId)
@@ -84,7 +85,9 @@ func (c CommentsService) GetCommentsByPost(postId int) ([]*models.Comment, error
 		}
 	}
 
-	comments, err := c.repo.GetCommentsByPost(postId)
+	offset, limit := pagination.GetOffsetAndLimit(page, pageSize)
+
+	comments, err := c.repo.GetCommentsByPost(postId, limit, offset)
 	if err != nil {
 		c.logger.Error.Println(consts.GettingCommentError, postId, err.Error())
 		return nil, re.ResponseError{
@@ -116,4 +119,5 @@ func (c CommentsService) GetRepliesOfComment(commentId int) ([]*models.Comment, 
 	}
 
 	return comments, nil
+
 }

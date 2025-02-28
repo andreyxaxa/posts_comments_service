@@ -30,8 +30,8 @@ func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost
 }
 
 // Comments is the resolver for the comments field.
-func (r *postResolver) Comments(ctx context.Context, obj *models.Post) ([]*models.Comment, error) {
-	comments, err := r.CommentsService.GetCommentsByPost(obj.ID)
+func (r *postResolver) Comments(ctx context.Context, obj *models.Post, page *int, pageSize *int) ([]*models.Comment, error) {
+	comments, err := r.CommentsService.GetCommentsByPost(obj.ID, page, pageSize)
 	if err != nil {
 		var rErr re.ResponseError
 		if errors.As(err, &rErr) {
