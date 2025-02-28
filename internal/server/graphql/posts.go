@@ -13,17 +13,17 @@ import (
 )
 
 // CreatePost is the resolver for the CreatePost field.
-func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost) (*models.Post, error) {
+func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost) (*models.PostGraph, error) {
 	panic(fmt.Errorf("not implemented: CreatePost - CreatePost"))
 }
 
 // GetAllPosts is the resolver for the GetAllPosts field.
-func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.Post, error) {
+func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.PostGraph, error) {
 	panic(fmt.Errorf("not implemented: GetAllPosts - GetAllPosts"))
 }
 
 // GetPostByID is the resolver for the GetPostById field.
-func (r *queryResolver) GetPostByID(ctx context.Context, id *int) (*models.PostDetails, error) {
+func (r *queryResolver) GetPostByID(ctx context.Context, id *int) (*models.Post, error) {
 	panic(fmt.Errorf("not implemented: GetPostByID - GetPostById"))
 }
 

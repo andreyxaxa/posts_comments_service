@@ -52,7 +52,7 @@ func main() {
 	var gateways *gateway.Gateways
 
 	logger.Info.Print("Creating Gateways")
-	logger.Info.Print("USE_IN_MEMORY = ", os.Getenv("USE_IN_MEMORY")) // Добавь
+	logger.Info.Print("USE_IN_MEMORY = ", os.Getenv("USE_IN_MEMORY"))
 	if os.Getenv("USE_IN_MEMORY") == "true" {
 		// TODO: inmemory strg
 	} else {
@@ -62,7 +62,7 @@ func main() {
 	}
 
 	logger.Info.Print("Creating services")
-	services := service.NewServices(gateways)
+	services := service.NewServices(gateways, logger) // 1
 
 	logger.Info.Print("Creating graphQL server")
 	port := os.Getenv("PORT")
