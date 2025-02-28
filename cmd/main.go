@@ -8,8 +8,10 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/andreyxaxa/posts_comments_service/configs"
 	"github.com/andreyxaxa/posts_comments_service/graph"
+	"github.com/andreyxaxa/posts_comments_service/internal/consts"
 	"github.com/andreyxaxa/posts_comments_service/internal/db"
 	"github.com/andreyxaxa/posts_comments_service/internal/gateway"
+	in_memory "github.com/andreyxaxa/posts_comments_service/internal/gateway/inmemory"
 	"github.com/andreyxaxa/posts_comments_service/internal/gateway/postgres"
 	resolvers "github.com/andreyxaxa/posts_comments_service/internal/server/graphql"
 	"github.com/andreyxaxa/posts_comments_service/internal/service"
@@ -54,7 +56,9 @@ func main() {
 	logger.Info.Print("Creating Gateways")
 	logger.Info.Print("USE_IN_MEMORY = ", os.Getenv("USE_IN_MEMORY"))
 	if os.Getenv("USE_IN_MEMORY") == "true" {
-		// TODO: inmemory strg
+		posts := in_memory.NewPostsInMemory(consts.PostsPullSize)
+		comments := in_memory.NewCommentsInMemory(consts.CommentsPullSize)
+		gateways = gateway.NewGateways(posts, comments)
 	} else {
 		posts := postgres.NewPostsPostgres(postgresDB)
 		comments := postgres.NewCommentsPostgres(postgresDB)
@@ -62,7 +66,7 @@ func main() {
 	}
 
 	logger.Info.Print("Creating services")
-	services := service.NewServices(gateways, logger) // 1
+	services := service.NewServices(gateways, logger)
 
 	logger.Info.Print("Creating graphQL server")
 	port := os.Getenv("PORT")
