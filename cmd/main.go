@@ -14,6 +14,7 @@ import (
 	resolvers "github.com/andreyxaxa/posts_comments_service/internal/server/graphql"
 	"github.com/andreyxaxa/posts_comments_service/internal/service"
 	"github.com/andreyxaxa/posts_comments_service/pkg/logger"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -32,7 +33,7 @@ func main() {
 		logger.Error.Fatal(err.Error())
 	}
 
-	logger.Info.Print("Connectin to Postgres")
+	logger.Info.Print("Connecting to Postgres")
 	options := db.PostgresOptions{
 		Name:     os.Getenv("DB_DBNAME"),
 		Post:     os.Getenv("DB_PORT"),
