@@ -6,10 +6,13 @@ package resolvers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/andreyxaxa/posts_comments_service/graph"
 	"github.com/andreyxaxa/posts_comments_service/internal/models"
+	re "github.com/andreyxaxa/posts_comments_service/pkg/responce_errors"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Replies is the resolver for the replies field.
@@ -19,7 +22,17 @@ func (r *commentResolver) Replies(ctx context.Context, obj *models.Comment) ([]*
 
 // CreateComment is the resolver for the CreateComment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input models.InputComment) (*models.Comment, error) {
-	panic(fmt.Errorf("not implemented: CreateComment - CreateComment"))
+	newComment, err := r.CommentsService.CreateComment(input.FromInput())
+	if err != nil {
+		var rErr re.ResponseError
+		if errors.As(err, &rErr) {
+			return nil, &gqlerror.Error{
+				Extensions: rErr.Extensions(),
+			}
+		}
+	}
+
+	return &newComment, nil
 }
 
 // CommentsSubscription is the resolver for the CommentsSubscription field.

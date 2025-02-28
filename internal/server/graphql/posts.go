@@ -6,15 +6,28 @@ package resolvers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/andreyxaxa/posts_comments_service/graph"
 	"github.com/andreyxaxa/posts_comments_service/internal/models"
+	re "github.com/andreyxaxa/posts_comments_service/pkg/responce_errors"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // CreatePost is the resolver for the CreatePost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost) (*models.PostGraph, error) {
-	panic(fmt.Errorf("not implemented: CreatePost - CreatePost"))
+	newPost, err := r.PostsService.CreatePost(post.FromInput())
+	if err != nil {
+		var rErr re.ResponseError
+		if errors.As(err, &rErr) {
+			return nil, &gqlerror.Error{
+				Extensions: rErr.Extensions(),
+			}
+		}
+	}
+
+	return newPost.ToGraph(), nil
 }
 
 // Comments is the resolver for the comments field.
@@ -24,7 +37,17 @@ func (r *postResolver) Comments(ctx context.Context, obj *models.Post) ([]*model
 
 // GetAllPosts is the resolver for the GetAllPosts field.
 func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.PostGraph, error) {
-	panic(fmt.Errorf("not implemented: GetAllPosts - GetAllPosts"))
+	posts, err := r.PostsService.GetAllPosts(page, pageSize)
+	if err != nil {
+		var rErr re.ResponseError
+		if errors.As(err, &rErr) {
+			return nil, &gqlerror.Error{
+				Extensions: rErr.Extensions(),
+			}
+		}
+	}
+
+	return models.ToPostGraph(posts), nil
 }
 
 // GetPostByID is the resolver for the GetPostById field.

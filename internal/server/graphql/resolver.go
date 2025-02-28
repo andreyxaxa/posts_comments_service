@@ -7,6 +7,6 @@ import "github.com/andreyxaxa/posts_comments_service/internal/service"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	service.Posts
-	service.Comments
+	PostsService    service.Posts
+	CommentsService service.Comments
 }

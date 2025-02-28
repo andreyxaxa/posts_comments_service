@@ -67,8 +67,8 @@ func main() {
 	logger.Info.Print("Creating graphQL server")
 	port := os.Getenv("PORT")
 	server := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &resolvers.Resolver{
-		Posts:    services.Posts,
-		Comments: services.Comments,
+		PostsService:    services.Posts,
+		CommentsService: services.Comments,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
