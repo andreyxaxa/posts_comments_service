@@ -35,11 +35,11 @@ func main() {
 
 	logger.Info.Print("Connecting to Postgres")
 	options := db.PostgresOptions{
-		Name:     os.Getenv("DB_DBNAME"),
-		Post:     os.Getenv("DB_PORT"),
-		Host:     os.Getenv("DB_HOST"),
-		User:     os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
+		Name:     os.Getenv("POSTGRES_DBNAME"),
+		Post:     os.Getenv("POSTGRES_PORT"),
+		Host:     os.Getenv("POSTGRES_HOST"),
+		User:     os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
 	}
 
 	logger.Info.Print(options)
