@@ -48,7 +48,7 @@ func main() {
 
 	postgresDB, err := db.NewPostgresDB(options)
 	if err != nil {
-		logger.Error.Fatalf(err.Error())
+		logger.Error.Fatalf("%s", err.Error())
 	}
 
 	var gateways *gateway.Gateways

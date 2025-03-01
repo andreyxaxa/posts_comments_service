@@ -1,6 +1,8 @@
 module github.com/andreyxaxa/posts_comments_service
 
-go 1.24.0
+go 1.24
+
+tool github.com/99designs/gqlgen
 
 require (
 	github.com/99designs/gqlgen v0.17.66
@@ -14,6 +16,7 @@ require (
 	github.com/agnivade/levenshtein v1.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
