@@ -15,7 +15,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func IsEqual(want, got models.Comment) bool {
+func IsEqualComment(want, got models.Comment) bool {
 	if want.Post != got.Post || want.ID != got.ID || want.Author != got.Author || want.Content != got.Content {
 		return false
 	}
@@ -164,7 +164,7 @@ func TestCommentsService_CreateComment(t *testing.T) {
 				return
 			}
 
-			if !IsEqual(got, tt.want.com) {
+			if !IsEqualComment(got, tt.want.com) {
 				t.Errorf("CreateComment() got = %v, want %v", got, tt.want)
 			}
 		})
@@ -338,7 +338,7 @@ func TestCommentsService_GetCommentsByPost(t *testing.T) {
 				return
 			}
 			for i := 0; i < len(got); i++ {
-				if !IsEqual(*got[i], *tt.want[i]) {
+				if !IsEqualComment(*got[i], *tt.want[i]) {
 					t.Errorf("GetCommentsByPost() got = %v, want %v", got[i], tt.want[i])
 					return
 				}
@@ -459,7 +459,7 @@ func TestCommentsService_GetRepliesOfComment(t *testing.T) {
 				return
 			}
 			for i := 0; i < len(got); i++ {
-				if !IsEqual(*got[i], *tt.want[i]) {
+				if !IsEqualComment(*got[i], *tt.want[i]) {
 					t.Errorf("GetCommentsByPost() got = %v, want %v", got[i], tt.want[i])
 					return
 				}
