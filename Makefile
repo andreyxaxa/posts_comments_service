@@ -24,3 +24,9 @@ migrate.up:
 
 migrate.down:
 	migrate -path ./migrations -database "postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable" down
+
+tests.run:
+	go test ./...
+
+tests.cover:
+	go test -cover ./...
